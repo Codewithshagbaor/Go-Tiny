@@ -1,9 +1,17 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ContextTypes
 import logging
-from ai_tools import shorten_content
-from password_tool import generate_password
-from coding_tools import fix_python_bug
+from tools.ai_tools import shorten_content
+from tools.coding_tools import fix_python_bug
+from tools.password_tool import generate_password
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Now you can access your API key using os.getenv()
+Token = os.getenv("TOKEN")
 # Enable logging
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -36,16 +44,19 @@ async def categories(update: Update, context: ContextTypes.DEFAULT_TYPE):
             InlineKeyboardButton("📝 Writing Tools", callback_data="writing_tools"),
             InlineKeyboardButton("🤖 AI Tool", callback_data="ai_category"),
             InlineKeyboardButton("🧑🏼‍💻Coding Tools", callback_data="coding_category"),
-            InlineKeyboardButton("⏱️ Productivity Tools", callback_data="productivity_category"),
         ],
         [
+            InlineKeyboardButton("⏱️ Productivity Tools", callback_data="productivity_category"),
             InlineKeyboardButton("😄 Fun Tools", callback_data="fun_tools"),
             InlineKeyboardButton("🎨 Multimedia Tools", callback_data="multimedia_tools"),
-            InlineKeyboardButton("ℹ️ Information Tools", callback_data="information_tools"),
-            InlineKeyboardButton("🔐 Password Tools", callback_data="password_tools"),
         ],
         [
+            InlineKeyboardButton("ℹ️ Information Tools", callback_data="information_tools"),
+            InlineKeyboardButton("🔐 Password Tools", callback_data="password_tools"),
             InlineKeyboardButton("🧮 Math Tools", callback_data="search_tools"),
+
+        ],
+        [
             InlineKeyboardButton("🔄 Conversion Tools", callback_data="conversion_tools"),
             InlineKeyboardButton("🔍 Search Tools", callback_data="search_tools"),
             InlineKeyboardButton("🔍 Request Tool", callback_data="request_tools"),
@@ -95,16 +106,19 @@ async def button_clicked(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 InlineKeyboardButton("📝 Writing Tools", callback_data="writing_tools"),
                 InlineKeyboardButton("🤖 AI Tool", callback_data="ai_category"),
                 InlineKeyboardButton("🧑🏼‍💻Coding Tools", callback_data="coding_category"),
-                InlineKeyboardButton("⏱️ Productivity Tools", callback_data="productivity_category"),
             ],
             [
+                InlineKeyboardButton("⏱️ Productivity Tools", callback_data="productivity_category"),
                 InlineKeyboardButton("😄 Fun Tools", callback_data="fun_tools"),
                 InlineKeyboardButton("🎨 Multimedia Tools", callback_data="multimedia_tools"),
-                InlineKeyboardButton("ℹ️ Information Tools", callback_data="information_tools"),
-                InlineKeyboardButton("🔐 Password Tools", callback_data="password_tools"),
             ],
             [
+                InlineKeyboardButton("ℹ️ Information Tools", callback_data="information_tools"),
+                InlineKeyboardButton("🔐 Password Tools", callback_data="password_tools"),
                 InlineKeyboardButton("🧮 Math Tools", callback_data="search_tools"),
+
+            ],
+            [
                 InlineKeyboardButton("🔄 Conversion Tools", callback_data="conversion_tools"),
                 InlineKeyboardButton("🔍 Search Tools", callback_data="search_tools"),
                 InlineKeyboardButton("🔍 Request Tool", callback_data="request_tools"),
@@ -125,14 +139,14 @@ async def button_clicked(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif query.data == "ai_category":
         keyboard = [
             [InlineKeyboardButton("Content Shortener", callback_data="content_shortener")],
-            [InlineKeyboardButton("<<Back", callback_data="back")]
+            [InlineKeyboardButton("🔙 Back", callback_data="back")]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
         await query.edit_message_text(text="AI Tools:", reply_markup=reply_markup)
     elif query.data == "coding_category":
         keyboard = [
             [InlineKeyboardButton("Python bug buster", callback_data="python_bug_buster")],
-            [InlineKeyboardButton("<<Back", callback_data="back")]
+            [InlineKeyboardButton("🔙 Back", callback_data="back")]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
         await query.edit_message_text(text="Coding Tools:", reply_markup=reply_markup)
@@ -197,7 +211,7 @@ async def password_generator(update: Update, context: ContextTypes.DEFAULT_TYPE)
     await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Your generated password: {password}")
 
 def main():
-    application = ApplicationBuilder().token("7176978686:AAGbNa2kOt5M7cvX1LZrfaXOqimgFSzx9DU").build()
+    application = ApplicationBuilder().token(Token).build()
 
     # Add command handlers
     start_handler = CommandHandler('start', start)
