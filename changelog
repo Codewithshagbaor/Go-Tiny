@@ -1,0 +1,29 @@
+# Changelog
+
+## [Unreleased]
+### Added
+- Implemented the `handle_tool` function in the `text_received` handler to handle text input for various tools.
+- Added support for processing user input based on subscription status (free or paid) and token balance.
+- Added functionality to deduct tokens from the user's balance when using paid tools with a free subscription.
+
+### Changed
+- Modified the `text_received` handler to retrieve user data from the database and update the `context.user_data` dictionary with the latest subscription status, token balance, and message count.
+- Refactored the code to handle different tools using the `handle_tool` function instead of separate conditions.
+
+### Fixed
+- Resolved the `KeyError: 'subscription'` issue by initializing the `subscription` key with a default value when retrieving user data from the database.
+
+## [Previous Versions]
+### Added
+- Initial implementation of the Telegram bot with various features and tools.
+- Support for categories, inline keyboards, and command handlers.
+- Integration with external APIs and tools for functionality like content shortening, grammar checking, password generation, and information lookup.
+- Database integration using SQLite to store user data.
+- Advertisement display functionality based on user subscription status and message count.
+
+### Changed
+- Refactored code structure and organization.
+- Updated documentation and help messages.
+
+### Fixed
+- Bug fixes and stability improvements.
